@@ -1,21 +1,37 @@
 // Your code here
 document.addEventListener("DOMContentLoaded", () => {
-    // Fetch character data from the server
-    fetch("http://localhost:3000/characters")
-      .then((response) => response.json()) // Parse JSON response
-      .then((characters) => {
-        const characterBar = document.getElementById("character-bar");
-  
-        characters.forEach((character) => {
-          // Create a new span element for each character
-          const span = document.createElement("span");
-          span.textContent = character.name;
-          span.style.cursor = "pointer"; // Make it look clickable
-  
-          // Append the span to the character bar
-          characterBar.appendChild(span);
+    const baseURL = "http://localhost:3000/characters";
+    const characterBar = document.getElementById("character-bar");
+    const detailedInfo = document.getElementById("detailed-info");
+    const characterName = document.getElementById("name");
+    const characterImage = document.getElementById("image");
+    const characterVotes = document.getElementById("vote-count");
+    const votesForm = document.getElementById("votes-form");
+    
+    // Fetch and display characters in character-bar
+    fetch(baseURL)
+        .then(response => response.json())
+        .then(characters => {
+            characters.forEach(character => {
+                const span = document.createElement("span");
+                span.textContent = character.name;
+                span.addEventListener("click", () => displayCharacterDetails(character));
+                characterBar.appendChild(span);
+            });
         });
-      })
-      .catch((error) => console.error("Error fetching characters:", error));
-  });
-  
+    
+    function displayCharacterDetails(character) {
+        characterName.textContent = character.name;
+        characterImage.src = character.image;
+        characterVotes.textContent = character.votes;
+        detailedInfo.dataset.id = character.id;
+    }
+    
+    votesForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const votesInput = document.getElementById("votes");
+        const newVotes = parseInt(votesInput.value) || 0;
+        characterVotes.textContent = parseInt(characterVotes.textContent) + newVotes;
+        votesInput.value = "";
+    });
+});
