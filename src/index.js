@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         characterImage.src = character.image;
         characterVotes.textContent = character.votes;
         detailedInfo.dataset.id = character.id;
-    }
+    }https://meet.google.com/biq-ejmj-seh?authuser=1&hl=en
     
     votesForm.addEventListener("submit", (event) => {
         event.preventDefault();
